@@ -25,6 +25,16 @@
       "name": "project-curator",
       "source": "./plugins/project-curator",
       "description": "A curator for projects built with a coding agent: verifies the agent's reports against the sources, argues options with you, and writes the relay prompts you hand to the agent."
+    },
+    {
+      "name": "astro-i18n",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/EdgeKits/astro-i18n",
+        "path": "plugins/astro-i18n",
+        "ref": "v0.1.0"
+      },
+      "description": "Edge-native i18n for Astro on Cloudflare Workers with @edgekits/astro-i18n: translations in Workers KV, a per-namespace edge cache, typed keys; then localized forms and multilingual SEO."
     }
   ]
 }

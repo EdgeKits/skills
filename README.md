@@ -8,6 +8,7 @@ Free agent skills from [EdgeKits](https://edgekits.dev), packaged as Claude plug
 | [`telegram-bot-security-audit`](plugins/telegram-bot-security-audit/) | Security audit for Telegram bot code: webhook and Mini App authenticity, chat identity, Stars payments, token leaks. The platform-specific holes generic scanners miss. | Claude Code, Cowork, any agent that reads `SKILL.md` |
 | [`project-journal`](plugins/project-journal/) | Persistent project memory: a small markdown journal loads at every session start, every session is captured when it ends, and decisions become ADRs. | Claude Code (its hooks are a Claude Code feature) |
 | [`project-curator`](plugins/project-curator/) | A curator for projects built with a coding agent: verifies the agent's reports against the sources, argues options with you, and writes the relay prompts you hand to the agent. | Claude Cowork |
+| [`astro-i18n`](https://github.com/EdgeKits/astro-i18n/tree/main/plugins/astro-i18n) | Edge-native i18n for Astro on Cloudflare Workers with `@edgekits/astro-i18n`: translations in Workers KV, a per-namespace edge cache, typed keys; then localized forms and multilingual SEO. | Claude Code, Cowork, any agent that reads `SKILL.md` |
 
 Each plugin installs on its own. Adding this repository as a marketplace installs nothing by itself.
 
@@ -20,6 +21,7 @@ Each plugin installs on its own. Adding this repository as a marketplace install
 /plugin install telegram-bot-security-audit@edgekits
 /plugin install repoaccess@edgekits
 /plugin install project-journal@edgekits
+/plugin install astro-i18n@edgekits
 ```
 
 Or run `/plugin`, open **Discover**, and pick from the list.
@@ -32,17 +34,20 @@ want from Discover. `project-curator` is made for Cowork.
 ```
 npx skills add EdgeKits/skills --list
 npx skills add EdgeKits/skills --skill telegram-bot-security-audit
+# astro-i18n lives in its own repository:
+npx skills add EdgeKits/astro-i18n --skill astro-i18n
 ```
 
 ## Privacy
 
-None of these plugins sends data anywhere. `repoaccess`, `telegram-bot-security-audit` and `project-curator`
-contain no code, hooks or MCP servers: they are instructions for your agent. `project-curator` writes only to
+None of these plugins sends data anywhere. `repoaccess`, `telegram-bot-security-audit`, `project-curator` and
+`astro-i18n` contain no code, hooks or MCP servers: they are instructions for your agent. `project-curator` writes only to
 the project's `curator/` folder and to files you name as its own. `project-journal` runs two local hooks that
 read Claude Code's session transcript and write a journal inside your project; nothing leaves your
 machine. Each plugin's README has the details:
 [RepoAccess](plugins/repoaccess/#privacy), [Telegram Bot Security Audit](plugins/telegram-bot-security-audit/#privacy),
-[Project Journal](plugins/project-journal/#privacy), [Project Curator](plugins/project-curator/#privacy).
+[Project Journal](plugins/project-journal/#privacy), [Project Curator](plugins/project-curator/#privacy),
+[Astro i18n](https://github.com/EdgeKits/astro-i18n/tree/main/plugins/astro-i18n#privacy).
 
 ## License
 
