@@ -32,7 +32,7 @@
         "source": "git-subdir",
         "url": "https://github.com/EdgeKits/astro-i18n",
         "path": "plugins/astro-i18n",
-        "ref": "v0.1.0"
+        "ref": "v0.1.2"
       },
       "description": "Edge-native i18n for Astro on Cloudflare Workers with @edgekits/astro-i18n: translations in Workers KV, a per-namespace edge cache, typed keys; then localized forms and multilingual SEO."
     }
