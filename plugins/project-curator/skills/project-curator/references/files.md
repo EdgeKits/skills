@@ -28,6 +28,8 @@ under 10,000 characters.
 - Agent: <Claude Code / OpenCode / other>
 - Instruction file: <CLAUDE.md / AGENTS.md / ...>
 - Journal: <yes, project-journal in journal/; rules page: journal/<page>.md / no>
+- Commit authorship: <"the maintainer alone: no co-author or attribution lines; enforced by
+  <.claude/settings.json attribution, the instruction file>" / "agent attribution allowed">
 
 ## What counts as blocking
 <One or two sentences: who is harmed, and how badly, for a defect to become work here.>

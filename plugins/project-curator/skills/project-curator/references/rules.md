@@ -64,6 +64,11 @@ it or repeat it. A figure with no derivation is a defect.**
   greps, nothing from memory. Read the declaration, not just a usage.
 - A file the agent just rewrote can read stale or torn through a mounted folder. Verify committed
   content through git (`git cat-file -p HEAD:<path>` or a hash of it), not through the mount.
+- **Commit authorship**, when the profile says the maintainer is the only author: for every commit
+  you review, run
+  `git --no-optional-locks log --format='%h %an <%ae>%n%(trailers:key=Co-authored-by,key=Claude-Session)' <range>`.
+  Another author, or any co-author or attribution line, is a defect. Raise it before the
+  maintainer pushes; the fix (rewording the unpushed commits) goes in a relay.
 - When you cannot verify something (no access, no tooling, an artifact you were not given), say so
   explicitly, so the round does not read as verified.
 - A log that does not show something is a statement about the log, not about what happened.
@@ -127,7 +132,8 @@ agreed with the maintainer; writing it into the repository is the agent's.
   makes a ruling that should bind the agent in every session, not just one relay; the stack, the
   commands or the workflow change.
 - **What it holds**: how to build, test and lint; the project's working rules; that commits stay
-  local; how the agent uses the journal; that `curator/` belongs to the curator.
+  local; who authors commits (curator-init step 5); how the agent uses the journal; that `curator/`
+  belongs to the curator.
 - **What it does not hold**: rules for you (they belong in the profile), facts discovered along the
   way (they belong in the journal's rules page, when the project has a journal), and history.
 - **Keep it short.** The agent loads it in every session. Check its length at every change; past

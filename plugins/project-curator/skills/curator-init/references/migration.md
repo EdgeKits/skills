@@ -37,7 +37,8 @@ Show the maintainer, in their chat language:
   the same); handoff and backlog files stay where they are and are listed under "Other
   curator-owned files" unless the maintainer wants them folded in.
 
-Write nothing until the maintainer says yes.
+Ask question 8 of curator-init step 3 (who authors the commits) if the old setup does not settle
+it. Write nothing until the maintainer says yes.
 
 ## 4. Write, check, report
 

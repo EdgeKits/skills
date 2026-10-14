@@ -1,6 +1,6 @@
 {
   "name": "project-curator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "displayName": "Project Curator",
   "description": "A curator for projects built with a coding agent: verifies the agent's reports against the sources, argues options with you, and writes the relay prompts you hand to the agent. Keeps its own memory per project and opens every chat from it.",
   "author": {

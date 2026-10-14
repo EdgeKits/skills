@@ -43,6 +43,10 @@ Look, do not ask, for these. Read file names and small config files only; never 
   marks "read before any work".
 - **Secret files present**: names matching `.env*`, `.dev.vars*`, `*.pem`, `*.key`, `.npmrc` and
   similar. Names only.
+- **Commit authorship**: the authors in each repository's history
+  (`git --no-optional-locks log --format='%an <%ae>' | sort | uniq -c`), whether its commits carry
+  co-author or session lines (`--format='%(trailers:key=Co-authored-by,key=Claude-Session)'`), and
+  whether `.claude/settings.json` or `.claude/settings.local.json` sets `attribution`.
 - **Sources of truth already declared**: skills under `.claude/skills/`, MCP servers in `.mcp.json`,
   docs the agent's instruction file points to.
 
@@ -62,6 +66,9 @@ otherwise a short numbered list. Ask only what step 2 did not settle:
 6. Sources of truth beyond what you found, and anything off limits (files, topics), with the reason.
 7. Whether `curator/` should be tracked in git, if the root is a repository. Recommend tracking it
    when the remote is private, so the curator's memory is backed up with the project.
+8. Who authors the commits. Recommend the maintainer alone: no co-author or attribution lines, so
+   the repository's contributors are the maintainer only. If step 2 found such lines in the
+   history, say so: what follows changes future commits only.
 
 ## 4. Write the files
 
@@ -78,15 +85,22 @@ corrections before you continue.
 Follow section 10 of the project-curator skill's `references/rules.md` for how the file is written.
 
 - **No instruction file, no code yet**: discuss its content with the maintainer: the stack, the
-  build, test and lint commands, the working rules, that commits stay local, how the agent uses the
-  journal, that `curator/` belongs to the curator. Write the draft to `curator/drafts/<file name>`,
+  build, test and lint commands, the working rules, that commits stay local, who authors commits,
+  how the agent uses the journal, that `curator/` belongs to the curator. Write the draft to `curator/drafts/<file name>`,
   show the maintainer a summary, and revise until they approve.
 - **No instruction file, but code exists**: if the agent can generate the file from the code
   (Claude Code and OpenCode: `/init`), the first relay asks it to run that and commit the result
   locally. Then review the generated file against the sources, and add what is missing through a
   draft, as above.
 - **The file exists**: read it. Propose only what the curator setup needs (the section about
-  `curator/`, and the journal if one is being added), as a draft or a short relay.
+  `curator/`, commit authorship, and the journal if one is being added), as a draft or a short
+  relay.
+
+**Commit authorship**, when the maintainer is the only author: the file says that commits are
+authored by the git identity already configured; that the agent never changes `user.name` or
+`user.email` and never passes `--author`; and that neither commit messages nor PR descriptions
+carry a `Co-Authored-By:` or any other attribution line. For Claude Code, the project
+setting in step 6 enforces the same, since Claude Code adds such lines by default.
 
 ## 6. Hand over what only others can do
 
@@ -96,11 +110,16 @@ Follow section 10 of the project-curator skill's `references/rules.md` for how t
   <folder>. At the start of every chat, before any work, follow the project-curator skill's session
   opening. If the folder is not reachable, say so and do not work from memory."
 - **The agent's side**, one relay at a time, in this order, each only if needed:
-  1. generating the instruction file with `/init` (step 5);
-  2. putting the approved instruction-file draft in place, with a hash check against the draft;
-  3. if `curator/` is tracked: adding `curator/` to the formatter's ignore file, if the project has
+  1. if the agent is Claude Code and the maintainer is the only author: creating or updating
+     `.claude/settings.json` so it holds `"attribution": {"commit": "", "pr": "", "sessionUrl": false}`,
+     keeping every other key, and committing it. First, so that no later relay's commit carries
+     the agent's attribution. If `.claude/settings.local.json` sets `attribution`, the relay
+     removes that key there too, since the local file overrides the project one;
+  2. generating the instruction file with `/init` (step 5);
+  3. putting the approved instruction-file draft in place, with a hash check against the draft;
+  4. if `curator/` is tracked: adding `curator/` to the formatter's ignore file, if the project has
      one (the instruction file's own section about `curator/` comes with the draft);
-  4. if the project has no journal and the agent is Claude Code: installing project-journal and
+  5. if the project has no journal and the agent is Claude Code: installing project-journal and
      running `/journal-init`.
   Follow the relay rules: discussion first, one `# Relay:` block, ending at "commit locally".
 

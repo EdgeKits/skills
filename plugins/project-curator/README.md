@@ -15,6 +15,7 @@ it: the curator reads where things stood, checks git for what changed, and tells
 - [Set up a project](#set-up-a-project)
 - [Daily use](#daily-use)
 - [Relays](#relays)
+- [Commit authorship](#commit-authorship)
 - [What is in curator/](#what-is-in-curator)
 - [Projects with an older curator setup](#projects-with-an-older-curator-setup)
 - [Working with project-journal](#working-with-project-journal)
@@ -60,21 +61,24 @@ Open a new chat in that Cowork project and write "start a new project" (any word
    it never opens them), and the skills and docs servers the project already uses.
 2. It asks the rest in one round: your name and the language to talk to you in; what a push does
    in each repository; what counts as a blocking defect in this project; any sources of truth or
-   off-limits files it could not find; and whether `curator/` should be tracked in git.
+   off-limits files it could not find; whether `curator/` should be tracked in git; and who authors
+   the commits (see [Commit authorship](#commit-authorship)).
 3. It writes `curator/profile.md`, `curator/status.md` and `curator/log.md`, and shows you the
    profile's key facts to correct.
 4. It takes care of the agent's instruction file (`CLAUDE.md` for Claude Code, `AGENTS.md` for most
    other agents):
    - in a new project without one, it works out the content with you (stack, commands, working
-     rules, local-only commits, the journal, `curator/`) and writes a draft for your approval;
+     rules, local-only commits, who authors them, the journal, `curator/`) and writes a draft for
+     your approval;
    - in a project with code but no instruction file, it asks the agent to generate one from the
      code (`/init`), then reviews it against the sources and drafts what is missing;
    - in a project that has one, it proposes only what the curator setup needs.
 5. It gives you two things to do yourself:
    - a short text to paste into the Cowork project's **Instructions**, so every new chat in the
      project opens as a curator session;
-   - the prompts for your coding agent, one at a time: putting the approved instruction file in
-     place, and starting a journal if the project has none.
+   - the prompts for your coding agent, one at a time: for Claude Code, a project setting that
+     stops it adding itself to your commits; putting the approved instruction file in place; and
+     starting a journal if the project has none.
 6. It opens the first session and tells you where the project stands.
 
 ## Daily use
@@ -114,6 +118,29 @@ A relay is the prompt the curator writes for your coding agent:
 - states what to do, what not to do, when to stop and report, and what evidence to put in the report;
 - for a bug, asks for a test that fails before the fix and passes after it.
 
+## Commit authorship
+
+By default Claude Code ends each commit message with a `Co-Authored-By: Claude` line, and in cloud
+and Remote Control sessions with a `Claude-Session:` link as well. GitHub counts a co-author as a
+contributor, so the repository shows two. If you want to be the only author (the setup recommends
+it), three things keep it that way:
+
+- **A project setting.** For Claude Code, the first prompt of the setup asks the agent to put
+  this in the project's `.claude/settings.json` and commit it, so it holds on every machine and in
+  every session that opens the repository:
+
+  ```json
+  { "attribution": { "commit": "", "pr": "", "sessionUrl": false } }
+  ```
+
+- **A rule in the agent's instruction file**: commits are authored by the git identity you
+  configured; the agent never changes it, never passes `--author`, and adds no co-author or
+  attribution lines to commits or pull requests. This also covers agents other than Claude Code.
+- **A check at every review.** The curator reads the author and the co-author and session lines
+  of each new commit, and treats anything but you as a defect to fix before you push.
+
+This changes future commits only. Lines already in the history stay there unless you rewrite it.
+
 ## What is in curator/
 
 | File | What it holds | How it is used |
@@ -151,7 +178,8 @@ prompt that asks the agent to start one.
 Built into the plugin, the same for every project: the three roles; the relay rules; English for
 relays and files; verifying every claim against the sources; what counts as work and the single
 parked list; reading the sources before describing behaviour; never reading secret files; owning
-mistakes as rules; how the agent's instruction file is written and kept current; read-only git
+mistakes as rules; how the agent's instruction file is written and kept current; checking who
+authored each commit; read-only git
 with `--no-optional-locks`; the session open and close.
 
 Set per project in `curator/profile.md`: everything else, including any rule your project needs on
