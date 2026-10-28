@@ -32,7 +32,7 @@
         "source": "git-subdir",
         "url": "https://github.com/EdgeKits/i18n",
         "path": "plugins/edgekits-i18n",
-        "ref": "v0.2.2"
+        "ref": "v0.3.0"
       },
       "description": "Edge-native i18n on Cloudflare Workers, two skills: astro-i18n adopts @edgekits/astro-i18n in an Astro site (translations in Workers KV, a per-namespace edge cache, typed keys, localized forms, multilingual SEO); tanstack-i18n adopts @edgekits/tanstack-i18n in a TanStack Start app sharing the same translations."
     }
